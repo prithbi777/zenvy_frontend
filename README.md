@@ -1,16 +1,123 @@
-# React + Vite
+# 🛒 Zenvy — Smart Shopping, Seamless Living
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Zenvy is a modern full-stack e-commerce web application built using the MERN stack. It delivers a secure, scalable, and user-centric shopping experience with features like authentication, product browsing, cart management, wishlist, reviews, order tracking, and online payments via Razorpay.
 
-Currently, two official plugins are available:
+## 🌐 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+👉 https://zenvy-frontend-swart.vercel.app/
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Overview
 
-## Expanding the ESLint configuration
+Zenvy serves as a centralized online shopping platform where users can explore products, manage their shopping activities, and complete secure transactions. The application is engineered with performance, clean architecture, and scalability in mind.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Core Features
+
+- User authentication (Signup / Login / Logout)
+- Secure JWT-based authorization
+- Product listing and detailed product pages
+- Add to Cart functionality
+- Wishlist management
+- Product reviews and ratings
+- Order placement and order history
+- Razorpay payment gateway integration
+- Responsive and modern UI
+- Robust error handling and validations
+
+---
+
+## 🧭 Application Navigation
+
+- Home
+- Products
+- Wishlist
+- Cart
+- Orders
+- Profile
+- Logout
+
+Each product card displays:
+- Product image
+- Product name
+- Price
+- Rating & reviews
+- Add to Cart / Wishlist options
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js (Vite)
+- Tailwind CSS
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB
+
+### Payments & Security
+- Razorpay Payment Gateway
+- JWT Authentication
+- Input Sanitization
+- Secure REST APIs
+
+---
+
+## 📁 Project Structure
+
+```
+
+Zenvy/
+├── frontend/
+│ ├── components/
+│ ├── pages/
+│ ├── services/
+│ ├── context/
+│ └── styles/
+├── backend/
+│ ├── routes/
+│ ├── controllers/
+│ ├── models/
+│ ├── middleware/
+│ └── config/
+└── README.md
+
+
+```
+
+
+---
+
+## ⚙️ Setup Instructions
+
+### Clone the repository
+```bash
+git clone https://github.com/your-username/zenvy.git
+cd zenvy
+
+Run Frontend
+cd frontend
+npm install
+npm run dev
+
+Run Backend
+cd backend
+npm install
+npm run dev
+
+```
+
+
+
+📞 Contact
+
+Email: becasual05@gmail.com
+
+Have feedback or suggestions? Feel free to reach out.
+
