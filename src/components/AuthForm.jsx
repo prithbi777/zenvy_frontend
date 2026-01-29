@@ -78,60 +78,58 @@ const AuthForm = ({ isLogin = false }) => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-md px-8 py-6">
+    <div className="min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center px-6 py-20 relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] animate-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
 
-          {/* Header */}
-          <h2 className="text-center text-3xl font-bold text-gray-900">
-            {isLogin ? 'Sign in to Zenvy' : 'Create your account'}
-          </h2>
+      <div className="w-full max-w-xl relative z-10 animate-fade-in">
+        <div className="bg-white/5 backdrop-blur-2xl rounded-[48px] border border-white/10 p-8 md:p-12 shadow-2xl">
 
-          <p className="mt-2 text-center text-sm text-gray-600">
-            {isLogin ? 'Or create a new account' : 'Already have an account?'}{' '}
-            <Link
-              to={isLogin ? '/signup' : '/login'}
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              {isLogin ? 'Sign up' : 'Sign in'}
-            </Link>
-          </p>
-
-          {/* LOGIN TYPE */}
-          {isLogin && (
-            <div className="mt-4 mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-3 text-center">
-                Login as
-              </label>
-
-              <div className="flex justify-center gap-6">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    value="normal"
-                    checked={userType === 'normal'}
-                    onChange={() => setUserType('normal')}
-                  />
-                  Normal
-                </label>
-
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    value="admin"
-                    checked={userType === 'admin'}
-                    onChange={() => setUserType('admin')}
-                  />
-                  Admin
-                </label>
+          {/* Logo/Brand Icon */}
+          <div className="flex justify-center mb-10">
+            <div className="relative h-16 w-16 overflow-hidden rounded-2xl bg-indigo-600 p-[2px] shadow-2xl shadow-indigo-500/20">
+              <div className="flex h-full w-full items-center justify-center rounded-[14px] bg-indigo-600 text-white font-black text-2xl italic leading-none">
+                Z
               </div>
+            </div>
+          </div>
+
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-3">
+              {isLogin ? 'Welcome back' : 'Join the legacy'}
+            </h2>
+            <p className="text-slate-400 font-medium">
+              {isLogin ? "Zenvy. Luxury redefined at your fingertips." : "Experience a new standard of shopping excellence."}
+            </p>
+          </div>
+
+          {/* User Type Segmented Control (Login Only) */}
+          {isLogin && (
+            <div className="flex p-1 bg-white/5 rounded-2xl mb-8 border border-white/5">
+              <button
+                type="button"
+                onClick={() => setUserType('normal')}
+                className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${userType === 'normal' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-500 hover:text-white'
+                  }`}
+              >
+                Personal
+              </button>
+              <button
+                type="button"
+                onClick={() => setUserType('admin')}
+                className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all duration-300 ${userType === 'admin' ? 'bg-white text-slate-900 shadow-lg' : 'text-slate-500 hover:text-white'
+                  }`}
+              >
+                Executive
+              </button>
             </div>
           )}
 
-          {/* FORM */}
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+              <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-xs font-bold text-rose-300 flex items-center gap-3">
+                <div className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse"></div>
                 {error}
               </div>
             )}
@@ -141,16 +139,18 @@ const AuthForm = ({ isLogin = false }) => {
                 label="Full Name"
                 name="name"
                 icon={User}
+                placeholder="Alexander Zenvy"
                 value={formData.name}
                 onChange={handleChange}
               />
             )}
 
             <InputField
-              label="Email"
+              label="Email Address"
               name="email"
               type="email"
               icon={Mail}
+              placeholder="alex@zenvy.com"
               value={formData.email}
               onChange={handleChange}
             />
@@ -163,21 +163,23 @@ const AuthForm = ({ isLogin = false }) => {
               show={showPassword}
               toggle={() => setShowPassword(!showPassword)}
             />
+
             {isLogin && (
-              <div className="flex justify-end">
+              <div className="flex justify-end pr-2">
                 <Link
                   to="/forgot-password"
-                  className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                  className="text-xs font-black uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition-colors"
                 >
-                  Forgot password?
+                  Forgot access?
                 </Link>
               </div>
             )}
 
             {!isLogin && (
               <PasswordField
-                label="Confirm Password"
+                label="Confirm Identity"
                 name="confirmPassword"
+                placeholder="Confirm your password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 show={showConfirmPassword}
@@ -187,7 +189,7 @@ const AuthForm = ({ isLogin = false }) => {
 
             {(isLogin ? userType === 'admin' : true) && (
               <PasswordField
-                label={isLogin ? 'Admin Passkey' : 'Admin Passkey (Optional)'}
+                label={isLogin ? 'Executive Passkey' : 'Admin Passkey (Optional)'}
                 name="adminPasskey"
                 value={formData.adminPasskey}
                 onChange={handleChange}
@@ -200,25 +202,42 @@ const AuthForm = ({ isLogin = false }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full rounded-md bg-indigo-600 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="w-full relative flex items-center justify-center px-8 py-5 bg-indigo-600 text-white rounded-2xl font-black text-lg transition-all duration-300 hover:bg-indigo-700 hover:shadow-[0_20px_50px_rgba(79,70,229,0.3)] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100"
             >
-              {isLoading ? 'Processing…' : isLogin ? 'Sign In' : 'Sign Up'}
+              {isLoading ? (
+                <div className="h-6 w-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+              ) : (
+                <>{isLogin ? 'Begin Session' : 'Establish Account'}</>
+              )}
             </button>
           </form>
 
+          <p className="mt-10 text-center text-sm font-medium text-slate-500">
+            {isLogin ? "Don't have an account?" : "Already part of the inner circle?"}{' '}
+            <Link
+              to={isLogin ? '/signup' : '/login'}
+              className="font-black text-indigo-400 hover:text-indigo-300 underline underline-offset-8 transition-colors"
+            >
+              {isLogin ? 'Join Zenvy' : 'Sign in here'}
+            </Link>
+          </p>
+
           {showVerificationMessage && (
-            <div className="mt-6 rounded-md border border-blue-200 bg-blue-50 p-4 text-sm text-blue-700">
-              <strong>Check your email.</strong>
-              <p className="mt-1">
-                OTP sent to <b>{formData.email}</b>
+            <div className="mt-8 p-6 bg-indigo-400/10 border border-indigo-400/20 rounded-3xl animate-fade-in">
+              <div className="flex items-center gap-3 text-indigo-300 font-bold mb-3">
+                <Mail className="h-5 w-5" />
+                Wait List Approval
+              </div>
+              <p className="text-slate-400 text-xs font-medium leading-relaxed mb-4">
+                We've sent a verification code to <b>{formData.email}</b>. Secure it to continue.
               </p>
               <button
                 onClick={() =>
                   navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`)
                 }
-                className="mt-3 font-medium text-blue-600 hover:text-blue-500"
+                className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-widest text-white hover:bg-white/10 transition-colors"
               >
-                Enter OTP
+                Authenticate Now
               </button>
             </div>
           )}
@@ -231,29 +250,41 @@ const AuthForm = ({ isLogin = false }) => {
 /* ================== INPUTS ================== */
 
 const InputField = ({ label, icon: Icon, ...props }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
-    <div className="relative mt-1">
-      <Icon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+  <div className="space-y-2 group">
+    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-focus-within:text-indigo-400 transition-colors pr-2">
+      {label}
+    </label>
+    <div className="relative">
+      <div className="absolute left-5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
+        <Icon className="h-5 w-5 text-slate-500 group-focus-within:text-indigo-500 transition-colors" />
+      </div>
       <input
         {...props}
-        className="w-full rounded-md border border-gray-300 py-2 pl-10 pr-3 text-sm"
+        className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-14 pr-5 text-sm font-bold text-white placeholder:text-slate-600 outline-none focus:bg-white/10 focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/5 transition-all duration-300 shadow-sm"
       />
     </div>
   </div>
 );
 
 const PasswordField = ({ label, show, toggle, icon: Icon = Lock, ...props }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700">{label}</label>
-    <div className="relative mt-1">
-      <Icon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+  <div className="space-y-2 group">
+    <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-focus-within:text-indigo-400 transition-colors pr-2">
+      {label}
+    </label>
+    <div className="relative">
+      <div className="absolute left-5 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
+        <Icon className="h-5 w-5 text-slate-500 group-focus-within:text-indigo-500 transition-colors" />
+      </div>
       <input
         {...props}
         type={show ? 'text' : 'password'}
-        className="w-full rounded-md border border-gray-300 py-2 pl-10 pr-10 text-sm"
+        className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-14 pr-12 text-sm font-bold text-white placeholder:text-slate-600 outline-none focus:bg-white/10 focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/5 transition-all duration-300 shadow-sm"
       />
-      <button type="button" onClick={toggle} className="absolute right-3 top-2.5">
+      <button
+        type="button"
+        onClick={toggle}
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-white transition-colors"
+      >
         {show ? <EyeOff size={18} /> : <Eye size={18} />}
       </button>
     </div>

@@ -82,59 +82,92 @@ const Home = () => {
   return (
     <div className="w-full">
       {/* Hero Banner Section */}
-      <div className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white rounded-full mix-blend-overlay filter blur-3xl animate-pulse delay-1000"></div>
+      <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden bg-[#0a0a0a]">
+        {/* Animated Background Gradients */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/20 rounded-full blur-[120px] animate-pulse"></div>
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse delay-700"></div>
+          <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-blue-600/10 rounded-full blur-[100px] animate-float"></div>
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <div className="text-center">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-6 tracking-tight">
-              Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-pink-200">Zenvy</span>
+        {/* Abstract Pattern Overlay */}
+        <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 py-20 lg:py-32">
+          <div className="flex flex-col items-center text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md animate-fade-in">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+              </span>
+              <span className="text-xs font-bold tracking-widest text-indigo-200 uppercase">New Season Arrival</span>
+            </div>
+
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tighter leading-[0.9]">
+              Curating <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">Excellence</span> <br />
+              For Your Lifestyle
             </h1>
-            <p className="text-xl sm:text-2xl text-indigo-100 mb-4 max-w-3xl mx-auto font-light">
-              Your Premium Destination for Quality Products
+
+            <p className="text-lg sm:text-xl text-slate-400 mb-12 max-w-2xl mx-auto font-medium leading-relaxed">
+              Zenvy is your premier destination for high-end fashion, electronics, and home essentials. Experience shopping redefined with quality you can trust.
             </p>
-            <p className="text-lg text-indigo-200 mb-8 max-w-2xl mx-auto">
-              Discover curated collections, unbeatable deals, and seamless shopping experiences designed just for you.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+
+            <div className="flex flex-col sm:flex-row gap-5 justify-center items-center w-full sm:w-auto">
               <a
                 href="#products"
-                className="px-8 py-4 bg-white text-indigo-600 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+                className="group relative flex items-center gap-2 px-10 py-5 bg-white text-slate-950 rounded-2xl font-black text-lg transition-all duration-500 hover:scale-[1.05] hover:shadow-[0_20px_50px_rgba(255,255,255,0.2)] active:scale-95"
               >
-                Shop Now
+                Start Exploring
+                <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                    <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+                  </svg>
+                </div>
               </a>
               {!isAuthenticated && (
                 <button
                   onClick={() => navigate('/signup')}
-                  className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold text-lg hover:bg-white hover:text-indigo-600 transition-all duration-300"
+                  className="px-10 py-5 bg-transparent border-2 border-white/10 text-white rounded-2xl font-black text-lg hover:bg-white/5 hover:border-white/40 transition-all duration-300 backdrop-blur-sm"
                 >
-                  Join Today
+                  Join the Club
                 </button>
               )}
             </div>
+
+            {/* Quick Stats/Features */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-24 pt-10 border-t border-white/5 w-full">
+              {[
+                { label: 'Curated Products', value: '500+' },
+                { label: 'Global Shipping', value: 'Fast' },
+                { label: 'Happy Customers', value: '10k+' },
+                { label: 'Secure Payments', value: '100%' },
+              ].map((stat, i) => (
+                <div key={i} className="flex flex-col gap-1">
+                  <span className="text-2xl font-black text-white">{stat.value}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">{stat.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Wave separator */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#F9FAFB" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Products Section */}
-      <div className="w-full py-12 bg-gray-50" id="products">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Header with Search */}
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Products</h2>
-
+      <div className="w-full pt-16 md:pt-24 pb-20 md:pb-32 bg-[#f8fafc]" id="products">
+        <div className="mx-auto max-w-7xl px-4 md:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 md:mb-12 pb-6 border-b border-slate-200">
+            <div>
+              <p className="text-[10px] font-black tracking-[0.3em] text-indigo-600 uppercase mb-2">Our Selection</p>
+              <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight">Full Collection</h2>
+            </div>
+            <div className="flex items-center gap-4 text-xs md:text-sm font-bold text-slate-500 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+              <span className="text-slate-900 whitespace-nowrap">All Products</span>
+              <span className="text-slate-200">•</span>
+              <span className="hover:text-indigo-600 cursor-pointer transition-colors whitespace-nowrap">Featured</span>
+              <span className="text-slate-200">•</span>
+              <span className="hover:text-indigo-600 cursor-pointer transition-colors whitespace-nowrap">Latest</span>
+            </div>
           </div>
+
 
 
           {/* Products Grid */}

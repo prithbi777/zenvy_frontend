@@ -326,6 +326,24 @@ class ApiService {
     });
   }
 
+  /* ================= NOTIFICATIONS ================= */
+
+  async getNotifications() {
+    return this.request('/notifications');
+  }
+
+  async markNotificationRead(id) {
+    return this.request(`/notifications/${id}/read`, {
+      method: 'PATCH',
+    });
+  }
+
+  async markAllNotificationsRead() {
+    return this.request('/notifications/read-all', {
+      method: 'PATCH',
+    });
+  }
+
   /* ================= UTILITIES ================= */
 
   setToken(token) {
