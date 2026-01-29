@@ -89,7 +89,7 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center p-2 md:p-4 transition-all duration-300">
-      <nav className="glass w-full max-w-7xl rounded-2xl md:rounded-3xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all duration-500 hover:shadow-[0_8px_40px_rgba(79,70,229,0.12)]">
+      <nav className="glass relative z-50 w-full max-w-7xl rounded-2xl md:rounded-3xl border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.08)] transition-all duration-500 hover:shadow-[0_8px_40px_rgba(79,70,229,0.12)]">
         <div className="flex h-16 items-center justify-between px-3 md:px-6 lg:px-10">
 
           {/* Logo */}
@@ -163,8 +163,8 @@ const Navbar = () => {
                     )}
                   </button>
 
-                  <div className={`absolute right-0 mt-3 w-80 origin-top-right transition-all duration-300 z-[60] ${activeDropdown === 'notif' ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible pointer-events-none'}`}>
-                    <div className="rounded-[32px] bg-white p-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-slate-100 overflow-hidden">
+                  <div className={`fixed sm:absolute left-4 right-4 sm:left-auto sm:right-0 top-[88px] sm:top-auto sm:mt-3 w-auto sm:w-80 origin-top transition-all duration-400 z-[60] ${activeDropdown === 'notif' ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible pointer-events-none'}`}>
+                    <div className="rounded-[32px] bg-white p-4 shadow-[0_20px_60px_rgba(0,0,0,0.2)] border border-slate-100 overflow-hidden">
                       <div className="flex items-center justify-between px-4 py-3 mb-4 border-b border-slate-50">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Bulletin</span>
                         {unreadCount > 0 && (
@@ -235,8 +235,8 @@ const Navbar = () => {
                     </div>
                   </button>
 
-                  <div className={`absolute right-0 mt-3 w-64 origin-top-right transition-all duration-300 z-50 ${activeDropdown === 'profile' ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible pointer-events-none'}`}>
-                    <div className="rounded-3xl bg-white p-3 shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-slate-100">
+                  <div className={`fixed sm:absolute left-4 right-4 sm:left-auto sm:right-0 top-[88px] sm:top-auto sm:mt-3 w-auto sm:w-64 origin-top transition-all duration-400 z-50 ${activeDropdown === 'profile' ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible pointer-events-none'}`}>
+                    <div className="rounded-[32px] bg-white p-3 shadow-[0_20px_60px_rgba(0,0,0,0.2)] border border-slate-100">
                       <div className="px-4 py-3 mb-2 bg-slate-50 rounded-2xl">
                         <p className="text-sm font-bold text-slate-800 line-clamp-1">{user.name}</p>
                         <p className="text-[11px] font-medium text-slate-500 line-clamp-1">{user.email}</p>
@@ -345,6 +345,11 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+
+      <div
+        onClick={() => setActiveDropdown(null)}
+        className={`fixed inset-0 bg-slate-900/10 backdrop-blur-[2px] z-[30] transition-opacity duration-300 sm:hidden ${activeDropdown ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      />
     </header>
   )
 }
