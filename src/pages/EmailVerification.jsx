@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Loader } from 'lucide-react';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE;
+
 const EmailVerification = () => {
   const [status, setStatus] = useState('loading');
   const [message, setMessage] = useState('');
@@ -12,7 +14,7 @@ const EmailVerification = () => {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/auth/verify-email?token=${token}`);
+        const response = await fetch(`${API_BASE_URL}/auth/verify-email?token=${token}`);
         const data = await response.json();
 
         if (response.ok) {

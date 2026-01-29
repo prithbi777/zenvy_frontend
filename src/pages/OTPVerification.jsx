@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { CheckCircle, XCircle, Loader, RefreshCw } from 'lucide-react';
+import { Loader, RefreshCw, ShieldCheck, ArrowLeft, Mail } from 'lucide-react';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE;
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
@@ -42,7 +44,11 @@ const OTPVerification = () => {
   const handlePaste = (e) => {
     e.preventDefault();
     const pasted = e.clipboardData.getData('text').slice(0, 6).split('');
-    setOtp(pasted.concat(Array(6 - pasted.length).fill('')));
+    const newOtp = pasted.concat(Array(6 - pasted.length).fill(''));
+    setOtp(newOtp);
+    // Focus the last filled input or the first empty one
+    const focusIndex = Math.min(newOtp.findIndex(d => d === '') === -1 ? 5 : newOtp.findIndex(d => d === ''), 5);
+    document.getElementById(`otp-${focusIndex}`)?.focus();
   };
 
   const handleSubmit = async (e) => {
@@ -55,10 +61,9 @@ const OTPVerification = () => {
     }
 
     setIsLoading(true);
-    // setStatus('loading'); // Removed full-page loader for better UX
 
     try {
-      const res = await fetch('http://localhost:5001/api/auth/verify-otp', {
+      const res = await fetch(`${API_BASE_URL}/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp: otpString }),
@@ -85,7 +90,7 @@ const OTPVerification = () => {
   const handleResendOTP = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:5001/api/auth/resend-otp', {
+      const res = await fetch(`${API_BASE_URL}/auth/resend-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -93,7 +98,7 @@ const OTPVerification = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setMessage('New OTP sent to your email');
+        setMessage('New credentials dispatched to ' + email);
         setOtp(['', '', '', '', '', '']);
         setStatus('input');
       } else {
@@ -102,88 +107,112 @@ const OTPVerification = () => {
       }
     } catch {
       setStatus('error');
-      setMessage('Failed to resend OTP.');
+      setMessage('Failed to resend authentication code.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (status === 'loading' && !isLoading) { // Show only on initial load
+  if (status === 'loading' && !isLoading) {
     return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-        <Loader className="h-12 w-12 animate-spin text-indigo-600" />
+      <div className="min-h-screen w-full flex items-center justify-center bg-[#0a0a0a]">
+        <div className="h-12 w-12 border-2 border-white/10 border-t-white rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow-md px-8 py-6">
+    <div className="min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center px-6 py-20 relative overflow-hidden">
+      {/* Background Aesthetic Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] animate-pulse"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px] animate-pulse delay-700"></div>
 
-          <h2 className="text-2xl font-bold text-center text-gray-900">
-            Verify Your Email
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Enter the 6-digit OTP sent to <b>{email}</b>
-          </p>
+      <div className="w-full max-w-xl relative z-10 animate-fade-in">
+        <div className="bg-white/5 backdrop-blur-2xl rounded-[48px] border border-white/10 p-8 md:p-12 shadow-2xl">
+
+          {/* Security Icon */}
+          <div className="flex justify-center mb-10">
+            <div className="relative h-16 w-16 overflow-hidden rounded-2xl bg-indigo-600 p-[2px] shadow-2xl shadow-indigo-500/20">
+              <div className="flex h-full w-full items-center justify-center rounded-[14px] bg-indigo-600 text-white font-black text-2xl">
+                <ShieldCheck className="h-8 w-8" />
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-black text-white tracking-tight mb-3 uppercase">
+              Secure Authentication
+            </h2>
+            <div className="flex items-center justify-center gap-2 text-slate-400 font-medium">
+              <Mail className="h-4 w-4" />
+              <p className="text-sm">Verification code sent to <span className="text-indigo-400 font-bold">{email}</span></p>
+            </div>
+          </div>
 
           {message && (
-            <div className={`mt-4 rounded-md p-3 text-sm ${status === 'success'
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : status === 'error'
-                  ? 'bg-red-50 text-red-700 border border-red-200'
-                  : 'bg-blue-50 text-blue-700 border border-blue-200'
-              }`}>
+            <div className={`mb-10 p-5 rounded-3xl border animate-fade-in ${status === 'success'
+                ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400 text-xs font-bold'
+                : 'bg-rose-500/10 border-rose-500/20 text-rose-400 text-xs font-bold'
+              } flex items-center gap-3`}>
+              <div className={`h-1.5 w-1.5 rounded-full ${status === 'success' ? 'bg-emerald-500' : 'bg-rose-500'} animate-pulse`}></div>
               {message}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-6">
-            <div className="flex justify-center gap-2">
+          <form onSubmit={handleSubmit} className="space-y-10">
+            <div className="flex justify-between gap-2 md:gap-4">
               {otp.map((digit, index) => (
                 <input
                   key={index}
                   id={`otp-${index}`}
                   type="text"
+                  inputMode="numeric"
                   maxLength={1}
                   value={digit}
                   onChange={(e) => handleOTPChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
                   onPaste={handlePaste}
                   disabled={status === 'success' || isLoading}
-                  className="h-12 w-12 rounded-md border border-gray-300 text-center text-lg font-semibold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500"
+                  className="h-14 w-full md:h-18 md:w-16 rounded-2xl bg-white/5 border border-white/10 text-center text-xl font-black text-white focus:bg-white/10 focus:border-indigo-500/50 focus:ring-4 focus:ring-indigo-500/5 outline-none transition-all duration-300 placeholder:text-slate-700 shadow-sm"
                 />
               ))}
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading || status === 'success'}
-              className="w-full flex items-center justify-center gap-2 rounded-md bg-indigo-600 py-2.5 text-white font-medium hover:bg-indigo-700 disabled:opacity-50 transition-all shadow-sm"
-            >
-              {isLoading ? (
-                <>
-                  <Loader className="h-4 w-4 animate-spin" />
-                  <span>Verifying...</span>
-                </>
-              ) : (
-                'Verify OTP'
-              )}
-            </button>
+            <div className="space-y-4">
+              <button
+                type="submit"
+                disabled={isLoading || status === 'success'}
+                className="w-full h-16 relative flex items-center justify-center px-8 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] transition-all duration-300 hover:bg-indigo-700 hover:shadow-[0_20px_50px_rgba(79,70,229,0.3)] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100"
+              >
+                {isLoading ? (
+                  <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                ) : (
+                  'Establish Identity'
+                )}
+              </button>
+
+              <div className="flex items-center justify-center gap-6">
+                <button
+                  type="button"
+                  onClick={() => navigate('/login')}
+                  className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-slate-500 hover:text-white transition-colors"
+                >
+                  <ArrowLeft className="h-3 w-3" /> Abort
+                </button>
+
+                <div className="h-4 w-[1px] bg-white/10"></div>
+
+                <button
+                  type="button"
+                  onClick={handleResendOTP}
+                  disabled={isLoading}
+                  className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition-colors disabled:opacity-50"
+                >
+                  <RefreshCw className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} /> Dispatch New Code
+                </button>
+              </div>
+            </div>
           </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={handleResendOTP}
-              disabled={isLoading}
-              className="inline-flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-500 disabled:opacity-50"
-            >
-              <RefreshCw className="h-4 w-4" />
-              Resend OTP
-            </button>
-          </div>
-
         </div>
       </div>
     </div>

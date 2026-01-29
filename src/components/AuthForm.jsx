@@ -17,7 +17,6 @@ const AuthForm = ({ isLogin = false }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showAdminPasskey, setShowAdminPasskey] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
 
   const { login, register, error, clearError } = useAuth();
   const navigate = useNavigate();
@@ -67,7 +66,7 @@ const AuthForm = ({ isLogin = false }) => {
         }
 
         await register(payload);
-        setShowVerificationMessage(true);
+        navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`);
       }
 
     } catch (err) {
@@ -222,25 +221,6 @@ const AuthForm = ({ isLogin = false }) => {
             </Link>
           </p>
 
-          {showVerificationMessage && (
-            <div className="mt-8 p-6 bg-indigo-400/10 border border-indigo-400/20 rounded-3xl animate-fade-in">
-              <div className="flex items-center gap-3 text-indigo-300 font-bold mb-3">
-                <Mail className="h-5 w-5" />
-                Wait List Approval
-              </div>
-              <p className="text-slate-400 text-xs font-medium leading-relaxed mb-4">
-                We've sent a verification code to <b>{formData.email}</b>. Secure it to continue.
-              </p>
-              <button
-                onClick={() =>
-                  navigate(`/verify-otp?email=${encodeURIComponent(formData.email)}`)
-                }
-                className="w-full py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-black uppercase tracking-widest text-white hover:bg-white/10 transition-colors"
-              >
-                Authenticate Now
-              </button>
-            </div>
-          )}
         </div>
       </div>
     </div>
