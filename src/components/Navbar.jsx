@@ -18,6 +18,7 @@ const Navbar = () => {
   const { cart } = useCart()
   const { wishlist } = useWishlist()
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications()
+  const [activeDropdown, setActiveDropdown] = useState(null) // 'notif', 'profile', or null
 
   const cartCount = cart?.totalItems || 0
   const wishlistCount = wishlist?.length || 0
@@ -59,6 +60,32 @@ const Navbar = () => {
   const handleSignup = () => {
     navigate('/signup')
   }
+
+  // Close dropdowns on interaction
+  const toggleDropdown = (name) => {
+    if (activeDropdown === name) {
+      setActiveDropdown(null)
+    } else {
+      setActiveDropdown(name)
+      setIsMobileMenuOpen(false) // Close mobile menu if opening a dropdown
+    }
+  }
+
+  useEffect(() => {
+    setActiveDropdown(null)
+    setIsMobileMenuOpen(false)
+  }, [location.pathname])
+
+  // Handle outside click to close dropdowns
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (!event.target.closest('.dropdown-container')) {
+        setActiveDropdown(null)
+      }
+    }
+    document.addEventListener('click', handleOutsideClick)
+    return () => document.removeEventListener('click', handleOutsideClick)
+  }, [])
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center p-2 md:p-4 transition-all duration-300">
@@ -123,8 +150,11 @@ const Navbar = () => {
               </Link>
 
               {isAuthenticated && (
-                <div className="relative group">
-                  <button className="relative p-2 md:p-2.5 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all duration-300">
+                <div className="relative dropdown-container">
+                  <button
+                    onClick={() => toggleDropdown('notif')}
+                    className={`relative p-2 md:p-2.5 rounded-xl transition-all duration-300 ${activeDropdown === 'notif' ? 'text-indigo-600 bg-indigo-50' : 'text-slate-500 hover:text-indigo-600 hover:bg-indigo-50'}`}
+                  >
                     <Bell className="h-5 w-5 md:h-6 md:w-6" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 flex h-4 w-4 md:h-5 md:w-5 items-center justify-center rounded-full bg-indigo-600 text-[8px] md:text-[9px] font-black text-white ring-2 ring-white shadow-md animate-pulse">
@@ -133,7 +163,7 @@ const Navbar = () => {
                     )}
                   </button>
 
-                  <div className="absolute right-0 mt-3 w-80 origin-top-right scale-95 opacity-0 invisible group-hover:scale-100 group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[60]">
+                  <div className={`absolute right-0 mt-3 w-80 origin-top-right transition-all duration-300 z-[60] ${activeDropdown === 'notif' ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible pointer-events-none'}`}>
                     <div className="rounded-[32px] bg-white p-4 shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-slate-100 overflow-hidden">
                       <div className="flex items-center justify-between px-4 py-3 mb-4 border-b border-slate-50">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Bulletin</span>
@@ -189,9 +219,12 @@ const Navbar = () => {
 
 
               {isAuthenticated && user ? (
-                <div className="relative group ml-0.5 md:ml-1">
-                  <button className="flex items-center gap-2 p-1 rounded-2xl hover:bg-slate-50 transition-all duration-300">
-                    <div className="h-9 w-9 md:h-10 md:w-10 overflow-hidden rounded-[14px] border-2 border-slate-100 ring-2 ring-transparent group-hover:ring-indigo-50 transition-all duration-300">
+                <div className="relative dropdown-container ml-0.5 md:ml-1">
+                  <button
+                    onClick={() => toggleDropdown('profile')}
+                    className={`flex items-center gap-2 p-1 rounded-2xl transition-all duration-300 ${activeDropdown === 'profile' ? 'bg-slate-50' : 'hover:bg-slate-50'}`}
+                  >
+                    <div className={`h-9 w-9 md:h-10 md:w-10 overflow-hidden rounded-[14px] border-2 transition-all duration-300 ${activeDropdown === 'profile' ? 'border-indigo-600 ring-2 ring-indigo-50' : 'border-slate-100 ring-2 ring-transparent'}`}>
                       {user.profilePhoto ? (
                         <img src={user.profilePhoto} alt="" className="h-full w-full object-cover" />
                       ) : (
@@ -202,8 +235,7 @@ const Navbar = () => {
                     </div>
                   </button>
 
-
-                  <div className="absolute right-0 mt-3 w-64 origin-top-right scale-95 opacity-0 invisible group-hover:scale-100 group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                  <div className={`absolute right-0 mt-3 w-64 origin-top-right transition-all duration-300 z-50 ${activeDropdown === 'profile' ? 'scale-100 opacity-100 visible' : 'scale-95 opacity-0 invisible pointer-events-none'}`}>
                     <div className="rounded-3xl bg-white p-3 shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-slate-100">
                       <div className="px-4 py-3 mb-2 bg-slate-50 rounded-2xl">
                         <p className="text-sm font-bold text-slate-800 line-clamp-1">{user.name}</p>
@@ -244,8 +276,11 @@ const Navbar = () => {
               )}
 
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2.5 bg-slate-100 text-slate-600 rounded-xl active:scale-90 transition-all"
+                onClick={() => {
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                  setActiveDropdown(null); // Close dropdowns if mobile menu toggled
+                }}
+                className={`md:hidden p-2.5 rounded-xl active:scale-90 transition-all ${isMobileMenuOpen ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'bg-slate-100 text-slate-600'}`}
               >
                 {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
