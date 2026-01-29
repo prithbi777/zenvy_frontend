@@ -174,14 +174,14 @@ const ProductDetails = () => {
                 )}
               </div>
 
-              <h1 className="text-5xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[0.9] mb-8">
+              <h1 className="text-4xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[0.95] lg:leading-[0.9] mb-8">
                 {product?.name}
               </h1>
 
               <div className="flex items-center gap-6 mb-10 pt-6 border-t border-slate-50">
                 <div>
                   <span className="block text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-2">Valuation</span>
-                  <span className="text-5xl font-black text-slate-900 tracking-tighter">
+                  <span className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tighter">
                     ₹{Number(product?.price || 0).toLocaleString()}
                   </span>
                 </div>
@@ -200,14 +200,14 @@ const ProductDetails = () => {
                   </p>
                 </div>
 
-                <div className="p-6 rounded-[32px] bg-slate-900 text-white flex items-center justify-between overflow-hidden relative">
+                <div className="p-5 lg:p-6 rounded-2xl lg:rounded-[32px] bg-slate-900 text-white flex items-center justify-between overflow-hidden relative shadow-lg shadow-slate-100">
                   <div className="relative z-10">
-                    <span className="block text-[10px] font-black uppercase tracking-widest opacity-50 mb-1">Availability Status</span>
-                    <span className="text-sm font-bold uppercase tracking-widest drop-shadow-sm">
+                    <span className="block text-[8px] lg:text-[10px] font-black uppercase tracking-widest opacity-50 mb-1">Availability Status</span>
+                    <span className="text-xs lg:text-sm font-bold uppercase tracking-widest drop-shadow-sm">
                       {product?.stock > 0 ? `Confirmed: ${product.stock} Units` : 'Reserve Full: Out of Stock'}
                     </span>
                   </div>
-                  <div className={`h-3 w-3 rounded-full relative z-10 shadow-[0_0_15px_rgba(255,255,255,0.5)] ${product?.stock > 0 ? 'bg-emerald-400' : 'bg-rose-500'}`}></div>
+                  <div className={`h-2.5 w-2.5 lg:h-3 lg:w-3 rounded-full relative z-10 shadow-[0_0_15px_rgba(255,255,255,0.5)] ${product?.stock > 0 ? 'bg-emerald-400' : 'bg-rose-500'}`}></div>
 
                   {/* Decorative Background for Stock Box */}
                   <div className="absolute top-[-50%] right-[-10%] w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
@@ -216,7 +216,7 @@ const ProductDetails = () => {
             </div>
 
             {/* Action Matrix */}
-            <div className="mt-auto pt-10 border-t border-slate-100 flex flex-col lg:flex-row gap-4">
+            <div className="mt-auto pt-8 lg:pt-10 border-t border-slate-100 flex items-center gap-3">
               <button
                 type="button"
                 disabled={product?.stock <= 0 || isAdding}
@@ -231,30 +231,30 @@ const ProductDetails = () => {
                     setIsAdding(false);
                   }
                 }}
-                className="flex-[3] relative h-20 group overflow-hidden bg-slate-900 rounded-[28px] text-white transition-all duration-500 hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300 shadow-2xl shadow-slate-200"
+                className="flex-[4] relative h-16 lg:h-20 group overflow-hidden bg-slate-900 rounded-2xl lg:rounded-[28px] text-white transition-all duration-500 hover:bg-slate-800 disabled:bg-slate-100 disabled:text-slate-300 shadow-xl shadow-slate-200"
               >
-                <div className="relative z-10 flex items-center justify-center gap-4 text-xs font-black uppercase tracking-[0.2em]">
+                <div className="relative z-10 flex items-center justify-center gap-3 lg:gap-4 text-[10px] lg:text-xs font-black uppercase tracking-[0.2em]">
                   {isAdding ? (
                     <div className="h-5 w-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
                   ) : (
                     <>
-                      <ShoppingBag className="h-5 w-5" />
+                      <ShoppingBag className="h-4 w-4 lg:h-5 lg:w-5" />
                       <span>{product?.stock > 0 ? 'Secure Placement' : 'Sold Out'}</span>
                     </>
                   )}
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 translate-y-20 group-hover:translate-y-0 transition-transform duration-500"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
               </button>
 
               <button
                 type="button"
                 onClick={handleWishlistToggle}
-                className={`flex-1 h-20 flex items-center justify-center rounded-[28px] border-2 transition-all duration-500 group active:scale-95 ${isWishlisted
+                className={`flex-1 h-16 lg:h-20 flex items-center justify-center rounded-2xl lg:rounded-[28px] border-2 transition-all duration-500 group active:scale-95 ${isWishlisted
                   ? 'bg-rose-500 border-rose-500 text-white shadow-xl shadow-rose-100'
-                  : 'bg-white border-slate-100 text-slate-900 hover:border-slate-900 shadow-sm'
+                  : 'bg-white border-slate-200 text-slate-900 hover:border-slate-900 shadow-md'
                   }`}
               >
-                <Heart className={`h-7 w-7 transition-all duration-500 group-hover:scale-110 ${isWishlisted ? 'fill-current' : ''}`} />
+                <Heart className={`h-6 w-6 lg:h-7 lg:w-7 transition-all duration-500 group-hover:scale-110 ${isWishlisted ? 'fill-current' : ''}`} />
               </button>
             </div>
           </div>
